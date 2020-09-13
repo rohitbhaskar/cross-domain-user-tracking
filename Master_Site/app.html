@@ -1,0 +1,147 @@
+<html lang="en"><head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+  </head>
+  
+  <body cz-shortcut-listen="true">
+      <h1>The iframe is working</h1>
+      <script>
+        (function() {
+
+          function getUuid() {
+            return 'xxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function (c) {
+              const r = Math.random() * 16 | 0;
+              const v = c === 'x' ? r : (r & 0x3 | 0x8);
+              return v.toString(16);
+            });
+          }
+
+          function getParameterByName(name) {
+            var match = RegExp('[?&]' + name + '=([^&]*)').exec(window.location.search);
+            return match && decodeURIComponent(match[1].replace(/\+/g, ' '));
+          }
+
+          function setCookie(name, value, days) {
+            var expires = "";
+            if (days) {
+              var date = new Date();
+              date.setTime(date.getTime() + (days * 24 * 60 * 60 * 1000));
+              expires = "; expires=" + date.toUTCString();
+            }
+            document.cookie = name + "=" + (value || "") + expires + "; path=/; secure; samesite=none";
+            console.log('Done setting trackign cookie', name + "=" + (value || "") + expires + "; path=/; samesite=none");
+          }
+
+          function getCookie(name) {
+            var nameEQ = name + "=";
+            var ca = document.cookie.split(';');
+            for (var i = 0; i < ca.length; i++) {
+              var c = ca[i];
+              while (c.charAt(0) == ' ') c = c.substring(1, c.length);
+              if (c.indexOf(nameEQ) == 0) return c.substring(nameEQ.length, c.length);
+            }
+            return null;
+          }
+
+          function eraseCookie(name) {
+            document.cookie = name + '=; Max-Age=-99999999;';
+          }
+
+          var userFP = getCookie('bs_ut')
+  
+          if (!userFP) {
+            var userFP = 'bs-' + getUuid()
+            setCookie('bs_ut', userFP, 365)
+          } else {
+            if (userFP.startsWith('bs-')) {
+              setCookie('bs_ut', userFP, 365)
+            } else {
+              var userFP = 'bs-' + getUuid()
+              setCookie('bs_ut', userFP, 365)
+            }
+          }
+
+          console.log("Iframe JS is working");
+          localStorage.setItem('bs_ut', userFP);
+          setCookie('visitorId', userFP, 365);
+
+          parent.postMessage(userFP, 'https://' + getParameterByName('parentDomain'));
+
+        })();
+      </script>
+      <!--
+    <script>
+      (function () {
+  
+        function getUuid() {
+          return 'xxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function (c) {
+            const r = Math.random() * 16 | 0;
+            const v = c === 'x' ? r : (r & 0x3 | 0x8);
+            return v.toString(16);
+          });
+        }
+  
+        function getParameterByName(name) {
+          var match = RegExp('[?&]' + name + '=([^&]*)').exec(window.location.search);
+          return match && decodeURIComponent(match[1].replace(/\+/g, ' '));
+        }
+  
+        function setCookie(name, value, days) {
+          var expires = "";
+          if (days) {
+            var date = new Date();
+            date.setTime(date.getTime() + (days * 24 * 60 * 60 * 1000));
+            expires = "; expires=" + date.toUTCString();
+          }
+          document.cookie = name + "=" + (value || "") + expires + "; path=/";
+        }
+  
+        function getCookie(name) {
+          var nameEQ = name + "=";
+          var ca = document.cookie.split(';');
+          for (var i = 0; i < ca.length; i++) {
+            var c = ca[i];
+            while (c.charAt(0) == ' ') c = c.substring(1, c.length);
+            if (c.indexOf(nameEQ) == 0) return c.substring(nameEQ.length, c.length);
+          }
+          return null;
+        }
+  
+        function eraseCookie(name) {
+          document.cookie = name + '=; Max-Age=-99999999;';
+        }
+  
+        var userFP = getCookie('lgs_ut')
+  
+        if (!userFP) {
+          var userFP = 'lgsy-' + getUuid()
+          setCookie('lgs_ut', userFP, 365)
+        } else {
+          if (userFP.startsWith('lgsy-')) {
+            setCookie('lgs_ut', userFP, 365)
+          } else {
+            var userFP = 'lgsy-' + getUuid()
+            setCookie('lgs_ut', userFP, 365)
+          }
+          
+        }
+  
+        // createCookie('visitorId', userFP, 365);
+        parent.postMessage(userFP, 'https://' + getParameterByName('parentDomain'));
+  
+        var paramsString = window.location.search;
+  
+        var http = new XMLHttpRequest();
+        var url = window.location.origin + '/api/orders/user/fingerprint/';
+        http.open('POST', url, true);
+        http.setRequestHeader('Content-type', 'application/json');
+        http.send(JSON.stringify({
+          order_id: getParameterByName('orderId'),
+          order_number: getParameterByName('orderNumber'),
+          shop: getParameterByName('shop'),
+          referrer: getParameterByName('referrer'),
+          user_fingerprint: userFP
+        }));
+      })()
+    </script>-->
+  </body></html>
