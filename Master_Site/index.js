@@ -1,7 +1,11 @@
 const express = require("express");
+var bodyParser = require('body-parser');
 const app = express();
 const path = require("path");
 const router = express.Router();
+
+app.use(bodyParser.json()); // support json encoded bodies
+app.use(bodyParser.urlencoded({ extended: true })); // support encoded bodies
 
 app.set("view engine", "pug");
 app.set("views", path.join(__dirname, "views"));
@@ -19,6 +23,10 @@ router.get("/app.html", (req, res) => {
 });
 router.get("/theme.js", (req, res) => {
   res.sendFile(__dirname + '/theme.js');
+});
+
+router.post("/user/lead-capture/", (req, res) => {
+  console.log(`Lead was captured with the details: ${req.body}`)
 });
 
 app.use("/", router);

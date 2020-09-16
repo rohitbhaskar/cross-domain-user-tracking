@@ -4,7 +4,12 @@
   </head>
   
   <body cz-shortcut-listen="true">
-      <h1>The iframe is working</h1>
+      <form id="bs-form">
+        <input type="email">
+        <input type="submit">
+      </form>
+
+
       <script>
         (function() {
 
@@ -67,81 +72,24 @@
 
           parent.postMessage(userFP, 'https://' + getParameterByName('parentDomain'));
 
+
+          document.addEventListener('DOMContentLoaded', () => {
+            var inputField = document.querySelector('#bs-form input[type="email"]')
+            document.querySelector('#bs-form').addEventListener('submit', event => {
+              event.preventDefault()
+              console.log(`submitted form with email: ${inputField.value}`);
+
+              var http = new XMLHttpRequest();
+              var url = window.location.origin + '/user/lead-capture/';
+              http.open('POST', url, true);
+              http.setRequestHeader('Content-type', 'application/json');
+              http.send(JSON.stringify({
+                email: inputField.value,
+                user_fingerprint: userFP
+              }));
+
+            })
+          })
         })();
       </script>
-      <!--
-    <script>
-      (function () {
-  
-        function getUuid() {
-          return 'xxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function (c) {
-            const r = Math.random() * 16 | 0;
-            const v = c === 'x' ? r : (r & 0x3 | 0x8);
-            return v.toString(16);
-          });
-        }
-  
-        function getParameterByName(name) {
-          var match = RegExp('[?&]' + name + '=([^&]*)').exec(window.location.search);
-          return match && decodeURIComponent(match[1].replace(/\+/g, ' '));
-        }
-  
-        function setCookie(name, value, days) {
-          var expires = "";
-          if (days) {
-            var date = new Date();
-            date.setTime(date.getTime() + (days * 24 * 60 * 60 * 1000));
-            expires = "; expires=" + date.toUTCString();
-          }
-          document.cookie = name + "=" + (value || "") + expires + "; path=/";
-        }
-  
-        function getCookie(name) {
-          var nameEQ = name + "=";
-          var ca = document.cookie.split(';');
-          for (var i = 0; i < ca.length; i++) {
-            var c = ca[i];
-            while (c.charAt(0) == ' ') c = c.substring(1, c.length);
-            if (c.indexOf(nameEQ) == 0) return c.substring(nameEQ.length, c.length);
-          }
-          return null;
-        }
-  
-        function eraseCookie(name) {
-          document.cookie = name + '=; Max-Age=-99999999;';
-        }
-  
-        var userFP = getCookie('lgs_ut')
-  
-        if (!userFP) {
-          var userFP = 'lgsy-' + getUuid()
-          setCookie('lgs_ut', userFP, 365)
-        } else {
-          if (userFP.startsWith('lgsy-')) {
-            setCookie('lgs_ut', userFP, 365)
-          } else {
-            var userFP = 'lgsy-' + getUuid()
-            setCookie('lgs_ut', userFP, 365)
-          }
-          
-        }
-  
-        // createCookie('visitorId', userFP, 365);
-        parent.postMessage(userFP, 'https://' + getParameterByName('parentDomain'));
-  
-        var paramsString = window.location.search;
-  
-        var http = new XMLHttpRequest();
-        var url = window.location.origin + '/api/orders/user/fingerprint/';
-        http.open('POST', url, true);
-        http.setRequestHeader('Content-type', 'application/json');
-        http.send(JSON.stringify({
-          order_id: getParameterByName('orderId'),
-          order_number: getParameterByName('orderNumber'),
-          shop: getParameterByName('shop'),
-          referrer: getParameterByName('referrer'),
-          user_fingerprint: userFP
-        }));
-      })()
-    </script>-->
   </body></html>

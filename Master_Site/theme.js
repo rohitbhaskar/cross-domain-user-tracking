@@ -12,7 +12,7 @@ var trackingCode = function(){
 
   var iframeCode, url = {};
 
-  url = 'https://d539a0a931d2.ngrok.io/app.html?shop=' + (window.Shopify && window.Shopify.shop) + '&referrer=' + getReferrer() + '&parentDomain=' + window.location.host;
+  url = 'https://2c5605870fe5.ngrok.io/app.html?shop=' + (window.Shopify && window.Shopify.shop) + '&referrer=' + getReferrer() + '&parentDomain=' + window.location.host;
   iframeCode = document.createElement("iframe");
   iframeCode.setAttribute("src", url),
   iframeCode.setAttribute("id", "bs_iframe"),
