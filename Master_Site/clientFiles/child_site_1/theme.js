@@ -12,11 +12,13 @@ var trackingCode = function(){
 
   var iframeCode, url = {};
 
-  url = 'https://eaa6c45fbbd6.ngrok.io/app.html?shop=' + (window.Shopify && window.Shopify.shop) + '&referrer=' + getReferrer() + '&parentDomain=' + window.location.host;
+  url = 'https://eaa6c45fbbd6.ngrok.io/app.html?shop=' + (window.Shopify && window.Shopify.shop) + '&referrer=' + getReferrer() + '&parentDomain=' + window.location.host + '&clientId=' + 'child_site_1';
   iframeCode = document.createElement("iframe");
   iframeCode.setAttribute("src", url),
   iframeCode.setAttribute("id", "bs_iframe"),
   document.body.appendChild(iframeCode);
+
+  localStorage.setItem('clientId', 'child_site_1');
 
   window.addEventListener("message", (function(e) {
     console.log(`Received Post message: ${e}. Details: ${e.origin} - ${e.data}`);
