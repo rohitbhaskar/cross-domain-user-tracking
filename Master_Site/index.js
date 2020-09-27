@@ -21,8 +21,8 @@ router.get("/page1", (req, res) => {
 router.get("/app.html", (req, res) => {
   res.sendFile(__dirname + '/app.html');
 });
-router.get("/theme.js", (req, res) => {
-  res.sendFile(__dirname + '/theme.js');
+router.get("/theme.js/:clientId", (req, res) => {
+  res.sendFile(__dirname + '/clientFiles' + req.params.clientId + '/theme.js');
 });
 
 router.post("/user/lead-capture/", (req, res) => {
